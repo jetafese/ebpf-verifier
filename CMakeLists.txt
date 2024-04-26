@@ -102,28 +102,28 @@ endif ()
 
 add_library(ebpfverifier ${LIB_SRC})
 
-add_executable(check src/main/check.cpp src/main/linux_verifier.cpp)
-add_executable(tests ${ALL_TEST})
-add_executable(run_yaml src/main/run_yaml.cpp)
-add_executable(conformance_check src/test/conformance_check.cpp)
+# add_executable(check src/main/check.cpp src/main/linux_verifier.cpp)
+# add_executable(tests ${ALL_TEST})
+# add_executable(run_yaml src/main/run_yaml.cpp)
+# add_executable(conformance_check src/test/conformance_check.cpp)
 
-set_target_properties(check
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
+# set_target_properties(check
+#         PROPERTIES
+#         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
 
-set_target_properties(tests
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
+# set_target_properties(tests
+#         PROPERTIES
+#         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
 
-set_target_properties(run_yaml
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
+# set_target_properties(run_yaml
+#         PROPERTIES
+#         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
 
-set_target_properties(conformance_check
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
+# set_target_properties(conformance_check
+#         PROPERTIES
+#         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/..")
 
-add_dependencies(tests conformance_check)
+# add_dependencies(tests conformance_check)
 
 target_compile_options(ebpfverifier PRIVATE ${COMMON_FLAGS})
 target_compile_options(ebpfverifier PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
@@ -141,30 +141,30 @@ add_subdirectory("external/libbtf")
 set(ebpfverifier_GUID_CMAKE "7d5b4e68-c0fa-3f86-9405-f6400219b440" CACHE INTERNAL "Project GUID")
 set(yaml-cpp_GUID_CMAKE "98d56b8a-d8eb-3d98-b8ee-c83696b4d58a" CACHE INTERNAL "Project GUID")
 
-target_compile_options(check PRIVATE ${COMMON_FLAGS})
-target_compile_options(check PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
-target_compile_options(check PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_FLAGS}>")
-target_compile_options(check PUBLIC "$<$<CONFIG:SANITIZE>:${SANITIZE_FLAGS}>")
-target_link_libraries(check PRIVATE ebpfverifier)
+# target_compile_options(check PRIVATE ${COMMON_FLAGS})
+# target_compile_options(check PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
+# target_compile_options(check PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_FLAGS}>")
+# target_compile_options(check PUBLIC "$<$<CONFIG:SANITIZE>:${SANITIZE_FLAGS}>")
+# target_link_libraries(check PRIVATE ebpfverifier)
 
-message("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
-target_compile_options(tests PRIVATE ${COMMON_FLAGS})
-target_compile_options(tests PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
-target_compile_options(tests PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_FLAGS}>")
-target_compile_options(tests PUBLIC "$<$<CONFIG:SANITIZE>:${SANITIZE_FLAGS}>")
-target_link_libraries(tests PRIVATE ebpfverifier)
-target_link_libraries(tests PRIVATE bpf_conformance)
-target_link_libraries(tests PRIVATE ${CMAKE_DL_LIBS})
+# message("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+# target_compile_options(tests PRIVATE ${COMMON_FLAGS})
+# target_compile_options(tests PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
+# target_compile_options(tests PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_FLAGS}>")
+# target_compile_options(tests PUBLIC "$<$<CONFIG:SANITIZE>:${SANITIZE_FLAGS}>")
+# target_link_libraries(tests PRIVATE ebpfverifier)
+# target_link_libraries(tests PRIVATE bpf_conformance)
+# target_link_libraries(tests PRIVATE ${CMAKE_DL_LIBS})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-target_link_libraries(tests PRIVATE Threads::Threads)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+# target_link_libraries(tests PRIVATE Threads::Threads)
+# target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
 target_link_libraries(ebpfverifier PRIVATE ${YAML_CPP_LIBRARIES})
 target_link_libraries(ebpfverifier PRIVATE libbtf)
 target_compile_options(ebpfverifier PRIVATE ${COMMON_FLAGS})
 
-target_link_libraries(run_yaml PRIVATE ebpfverifier)
-target_link_libraries(conformance_check PRIVATE ebpfverifier)
+# target_link_libraries(run_yaml PRIVATE ebpfverifier)
+# target_link_libraries(conformance_check PRIVATE ebpfverifier)

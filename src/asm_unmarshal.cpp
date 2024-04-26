@@ -661,6 +661,8 @@ struct Unmarshaller {
             pc++;
             note_next_pc();
             if (skip_instruction) {
+                // add a dummy value here
+                prog.emplace_back(label_t(static_cast<int>(pc)), Undefined{0}, current_line_info);
                 pc++;
                 note_next_pc();
             }
