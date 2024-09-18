@@ -265,3 +265,9 @@ cfg_t prepare_cfg(const InstructionSeq& prog, const program_info& info, bool sim
 
     return cfg;
 }
+
+cfg_t get_cfg(const InstructionSeq& prog, bool must_have_exit) {
+    // Convert the instruction sequence to a deterministic control-flow graph.
+    cfg_t det_cfg = instruction_seq_to_cfg(prog, must_have_exit);
+    return det_cfg;
+}

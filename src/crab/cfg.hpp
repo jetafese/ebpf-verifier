@@ -517,6 +517,7 @@ std::vector<std::string> stats_headers();
 std::map<std::string, int> collect_stats(const cfg_t&);
 
 cfg_t prepare_cfg(const InstructionSeq& prog, const program_info& info, bool simplify, bool must_have_exit=true);
+cfg_t get_cfg(const InstructionSeq& prog, bool must_have_exit=true);
 
 void explicate_assertions(cfg_t& cfg, const program_info& info);
 std::vector<Assert> get_assertions(Instruction ins, const program_info& info);
