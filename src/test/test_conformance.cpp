@@ -1,21 +1,22 @@
 // Copyright (c) Prevail Verifier contributors.
 // SPDX-License-Identifier: MIT
-#include <catch2/catch_all.hpp>
-#include <boost/dll/runtime_symbol_info.hpp>
 #include "../external/bpf_conformance/include/bpf_conformance.h"
+#include <boost/dll/runtime_symbol_info.hpp>
+#include <catch2/catch_all.hpp>
 
 #define CONFORMANCE_TEST_PATH "external/bpf_conformance/tests/"
 
-void test_conformance(std::string filename, bpf_conformance_test_result_t expected_result, std::string expected_reason) {
+void test_conformance(std::string filename, bpf_conformance_test_result_t expected_result,
+                      std::string expected_reason) {
     std::vector<std::filesystem::path> test_files = {CONFORMANCE_TEST_PATH + filename};
     boost::filesystem::path test_path = boost::dll::program_location();
     boost::filesystem::path extension = test_path.extension();
     std::filesystem::path plugin_path =
         test_path.remove_filename().append("conformance_check" + extension.string()).string();
-    std::map<std::filesystem::path, std::tuple<bpf_conformance_test_result_t, std::string>> result = bpf_conformance(
-        test_files, plugin_path, {}, {}, {}, bpf_conformance_test_CPU_version_t::v4,
-        bpf_conformance_groups_t::default_groups | bpf_conformance_groups_t::callx,
-        bpf_conformance_list_instructions_t::LIST_INSTRUCTIONS_NONE, true);
+    std::map<std::filesystem::path, std::tuple<bpf_conformance_test_result_t, std::string>> result =
+        bpf_conformance(test_files, plugin_path, {}, {}, {}, bpf_conformance_test_CPU_version_t::v4,
+                        bpf_conformance_groups_t::default_groups | bpf_conformance_groups_t::callx,
+                        bpf_conformance_list_instructions_t::LIST_INSTRUCTIONS_NONE, true);
     for (auto file : test_files) {
         auto& [file_result, reason] = result[file];
         REQUIRE(file_result == expected_result);
@@ -26,29 +27,29 @@ void test_conformance(std::string filename, bpf_conformance_test_result_t expect
     }
 }
 
-#define TEST_CONFORMANCE(filename) \
-    TEST_CASE("conformance_check " filename, "[conformance]") { \
+#define TEST_CONFORMANCE(filename)                                                       \
+    TEST_CASE("conformance_check " filename, "[conformance]") {                          \
         test_conformance(filename, bpf_conformance_test_result_t::TEST_RESULT_PASS, {}); \
     }
 
 // Any tests that fail verification are safe, but might prevent
 // legitimate programs from being usable.
-#define TEST_CONFORMANCE_VERIFICATION_FAILED(filename) \
-    TEST_CASE("conformance_check " filename, "[conformance]") { \
+#define TEST_CONFORMANCE_VERIFICATION_FAILED(filename)                                                       \
+    TEST_CASE("conformance_check " filename, "[conformance]") {                                              \
         test_conformance(filename, bpf_conformance_test_result_t::TEST_RESULT_ERROR, "Verification failed"); \
     }
 
 // Any tests that return top are safe, but are not as precise as they
 // could be and so may prevent legitimate programs from being usable.
-#define TEST_CONFORMANCE_TOP(filename) \
-    TEST_CASE("conformance_check " filename, "[conformance]") { \
+#define TEST_CONFORMANCE_TOP(filename)                                                                               \
+    TEST_CASE("conformance_check " filename, "[conformance]") {                                                      \
         test_conformance(filename, bpf_conformance_test_result_t::TEST_RESULT_ERROR, "Couldn't determine r0 value"); \
     }
 
 // Any tests that return a range are safe, but are not as precise as they
 // could be and so may prevent legitimate programs from being usable.
-#define TEST_CONFORMANCE_RANGE(filename, range)                                                                  \
-    TEST_CASE("conformance_check " filename, "[conformance]") {                                                  \
+#define TEST_CONFORMANCE_RANGE(filename, range)                                                                   \
+    TEST_CASE("conformance_check " filename, "[conformance]") {                                                   \
         test_conformance(filename, bpf_conformance_test_result_t::TEST_RESULT_ERROR, "r0 value is range " range); \
     }
 
@@ -75,7 +76,7 @@ TEST_CONFORMANCE("be16.data")
 TEST_CONFORMANCE("be32-high.data")
 TEST_CONFORMANCE("be32.data")
 TEST_CONFORMANCE("be64.data")
-TEST_CONFORMANCE_VERIFICATION_FAILED("call_local.data")
+TEST_CONFORMANCE("call_local.data")
 TEST_CONFORMANCE("call_unwind_fail.data")
 TEST_CONFORMANCE("callx.data")
 TEST_CONFORMANCE("div32-by-zero-reg.data")
@@ -90,6 +91,7 @@ TEST_CONFORMANCE("div64-negative-reg.data")
 TEST_CONFORMANCE("div64-reg.data")
 TEST_CONFORMANCE("exit-not-last.data")
 TEST_CONFORMANCE("exit.data")
+TEST_CONFORMANCE("j-signed-imm.data")
 TEST_CONFORMANCE("ja32.data")
 TEST_CONFORMANCE("jeq-imm.data")
 TEST_CONFORMANCE("jeq-reg.data")
@@ -150,25 +152,25 @@ TEST_CONFORMANCE("le16.data")
 TEST_CONFORMANCE("le32.data")
 TEST_CONFORMANCE("le64.data")
 TEST_CONFORMANCE("lock_add.data")
-TEST_CONFORMANCE_RANGE("lock_add32.data", "[0, 1311768467463790321]")
+TEST_CONFORMANCE("lock_add32.data")
 TEST_CONFORMANCE("lock_and.data")
-TEST_CONFORMANCE_TOP("lock_and32.data")
+TEST_CONFORMANCE("lock_and32.data")
 TEST_CONFORMANCE_TOP("lock_cmpxchg.data")
 TEST_CONFORMANCE_TOP("lock_cmpxchg32.data")
 TEST_CONFORMANCE("lock_fetch_add.data")
-TEST_CONFORMANCE_RANGE("lock_fetch_add32.data", "[0, 1311768467463790321]")
+TEST_CONFORMANCE("lock_fetch_add32.data")
 TEST_CONFORMANCE("lock_fetch_and.data")
-TEST_CONFORMANCE_TOP("lock_fetch_and32.data")
+TEST_CONFORMANCE("lock_fetch_and32.data")
 TEST_CONFORMANCE("lock_fetch_or.data")
-TEST_CONFORMANCE_TOP("lock_fetch_or32.data")
+TEST_CONFORMANCE("lock_fetch_or32.data")
 TEST_CONFORMANCE("lock_fetch_xor.data")
-TEST_CONFORMANCE_TOP("lock_fetch_xor32.data")
+TEST_CONFORMANCE("lock_fetch_xor32.data")
 TEST_CONFORMANCE("lock_or.data")
-TEST_CONFORMANCE_TOP("lock_or32.data")
+TEST_CONFORMANCE("lock_or32.data")
 TEST_CONFORMANCE("lock_xchg.data")
 TEST_CONFORMANCE("lock_xchg32.data")
 TEST_CONFORMANCE("lock_xor.data")
-TEST_CONFORMANCE_TOP("lock_xor32.data")
+TEST_CONFORMANCE("lock_xor32.data")
 TEST_CONFORMANCE("lsh32-imm.data")
 TEST_CONFORMANCE("lsh32-imm-high.data")
 TEST_CONFORMANCE("lsh32-imm-neg.data")
