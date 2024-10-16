@@ -115,7 +115,7 @@ static number_t signed_number(const std::string& s) { return std::stoll(s); }
 
 static number_t unsigned_number(const std::string& s) { return std::stoull(s); }
 
-static Value reg_or_imm(const std::string& s) {
+static Values reg_or_imm(const std::string& s) {
     if (s.at(0) == 'w' || s.at(0) == 'r') {
         return reg(s);
     } else {

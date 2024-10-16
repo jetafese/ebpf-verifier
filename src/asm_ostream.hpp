@@ -47,7 +47,7 @@ std::ostream& operator<<(std::ostream& os, Condition::Op op);
 
 inline std::ostream& operator<<(std::ostream& os, const Imm imm) { return os << crab::to_signed(imm.v); }
 inline std::ostream& operator<<(std::ostream& os, Reg const& a) { return os << "r" << gsl::narrow<int>(a.v); }
-inline std::ostream& operator<<(std::ostream& os, Value const& a) {
+inline std::ostream& operator<<(std::ostream& os, Values const& a) {
     if (const auto pa = std::get_if<Imm>(&a)) {
         return os << *pa;
     }

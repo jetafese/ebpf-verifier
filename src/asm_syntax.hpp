@@ -92,7 +92,7 @@ struct Reg {
     constexpr bool operator==(const Reg&) const = default;
 };
 
-using Value = std::variant<Imm, Reg>;
+using Values = std::variant<Imm, Reg>;
 
 /// Binary operation.
 struct Bin {
@@ -118,7 +118,7 @@ struct Bin {
 
     Op op;
     Reg dst; ///< Destination.
-    Value v;
+    Values v;
     bool is64{};
     bool lddw{};
     constexpr bool operator==(const Bin&) const = default;
@@ -171,7 +171,7 @@ struct Condition {
 
     Op op;
     Reg left;
-    Value right;
+    Values right;
     bool is64{};
     constexpr bool operator==(const Condition&) const = default;
 };
@@ -250,7 +250,7 @@ struct Deref {
 /// Load/store instruction.
 struct Mem {
     Deref access;
-    Value value;
+    Values value;
     bool is_load{};
     constexpr bool operator==(const Mem&) const = default;
 };
@@ -339,7 +339,7 @@ enum class AccessType {
 struct ValidAccess {
     Reg reg;
     int32_t offset{};
-    Value width{Imm{0}};
+    Values width{Imm{0}};
     bool or_null{};
     AccessType access_type{};
     constexpr bool operator==(const ValidAccess&) const = default;

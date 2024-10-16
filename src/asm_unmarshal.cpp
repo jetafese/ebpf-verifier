@@ -237,7 +237,7 @@ struct Unmarshaller {
 
     static uint64_t zero_extend(const int32_t imm) { return uint64_t{crab::to_unsigned(imm)}; }
 
-    static auto getBinValue(const pc_t pc, const ebpf_inst inst) -> Value {
+    static auto getBinValue(const pc_t pc, const ebpf_inst inst) -> Values {
         if (inst.opcode & INST_SRC_REG) {
             if (inst.imm != 0) {
                 throw InvalidInstruction(pc, make_opcode_message("nonzero imm for", inst.opcode));
@@ -348,9 +348,9 @@ struct Unmarshaller {
                         .basereg = Reg{basereg},
                         .offset = inst.offset,
                     },
-                .value = isLoad  ? Value{Reg{inst.dst}}
-                         : isImm ? Value{Imm{zero_extend(inst.imm)}}
-                                 : Value{Reg{inst.src}},
+                .value = isLoad  ? Values{Reg{inst.dst}}
+                         : isImm ? Values{Imm{zero_extend(inst.imm)}}
+                                 : Values{Reg{inst.src}},
                 .is_load = isLoad,
             };
             return res;
@@ -688,8 +688,8 @@ struct Unmarshaller {
                                   ? std::optional<Condition>{}
                                   : Condition{.op = op,
                                               .left = Reg{inst.dst},
-                                              .right = (inst.opcode & INST_SRC_REG) ? Value{Reg{inst.src}}
-                                                                                    : Value{Imm{sign_extend(inst.imm)}},
+                                              .right = (inst.opcode & INST_SRC_REG) ? Values{Reg{inst.src}}
+                                                                                    : Values{Imm{sign_extend(inst.imm)}},
                                               .is64 = (inst.opcode & INST_CLS_MASK) == INST_CLS_JMP};
             return Jmp{.cond = cond, .target = target};
         }

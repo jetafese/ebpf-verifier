@@ -18,7 +18,7 @@ class AssertExtractor {
     program_info info;
     std::optional<label_t> current_label; ///< Pre-simplification label this assert is part of.
 
-    static Imm imm(const Value& v) { return std::get<Imm>(v); }
+    static Imm imm(const Values& v) { return std::get<Imm>(v); }
 
     static vector<Assert> zero_offset_ctx(const Reg reg) {
         vector<Assert> res;

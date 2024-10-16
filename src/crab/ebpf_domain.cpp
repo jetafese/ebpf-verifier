@@ -1647,7 +1647,7 @@ static std::tuple<linear_expression_t, linear_expression_t> lb_ub_access_pair(co
 void ebpf_domain_t::operator()(const ValidAccess& s) {
     using namespace crab::dsl_syntax;
 
-    const bool is_comparison_check = s.width == Value{Imm{0}};
+    const bool is_comparison_check = s.width == Values{Imm{0}};
 
     const auto reg = reg_pack(s.reg);
     // join_over_types instead of simple iteration is only needed for assume-assert

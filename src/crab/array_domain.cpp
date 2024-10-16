@@ -722,7 +722,7 @@ std::optional<linear_expression_t> array_domain_t::load(const NumAbsDomain& inv,
         CRAB_WARN("Ignored read from cell ", kind, "[", o, "...", o + size - 1, "]", " because it overlaps with ",
                   cells.size(), " cells");
         /*
-            TODO: we can apply here "Value Recomposition" a la Mine'06 (https://arxiv.org/pdf/cs/0703074.pdf)
+            TODO: we can apply here "Values Recomposition" a la Mine'06 (https://arxiv.org/pdf/cs/0703074.pdf)
                 to construct values of some type from a sequence of bytes.
                 It can be endian-independent but it would more precise if we choose between little- and big-endian.
         */
