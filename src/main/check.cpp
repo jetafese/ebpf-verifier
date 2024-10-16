@@ -111,13 +111,16 @@ int main(int argc, char** argv) {
 
     std::set<std::string> include_groups = _get_conformance_group_names();
     app.add_option("--include_groups", include_groups, "Include conformance groups")
-        ->group("Features")->type_name("GROUPS")
+        ->group("Features")
+        ->type_name("GROUPS")
         ->expected(0, _conformance_groups.size())
         ->check(CLI::IsMember(_get_conformance_group_names()));
 
     std::set<std::string> exclude_groups;
     app.add_option("--exclude_groups", exclude_groups, "Exclude conformance groups")
-        ->group("Features")->type_name("GROUPS")->option_text("")
+        ->group("Features")
+        ->type_name("GROUPS")
+        ->option_text("")
         ->expected(0, _conformance_groups.size())
         ->check(CLI::IsMember(_get_conformance_group_names()));
 
@@ -144,8 +147,9 @@ int main(int argc, char** argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    if (verbose)
+    if (verbose) {
         ebpf_verifier_options.print_invariants = ebpf_verifier_options.print_failures = true;
+    }
 
     // Enable default conformance groups, which don't include callx or packet.
     ebpf_platform_t platform = g_ebpf_platform_linux;
@@ -182,8 +186,9 @@ int main(int argc, char** argv) {
     }
 #endif
 
-    if (domain == "linux")
+    if (domain == "linux") {
         ebpf_verifier_options.mock_map_fds = false;
+    }
 
     // Read a set of raw program sections from an ELF file.
     vector<raw_program> raw_progs;
@@ -215,8 +220,8 @@ int main(int argc, char** argv) {
 
     // Convert the raw program section to a set of instructions.
     std::variant<InstructionSeq, std::string> prog_or_error = unmarshal(raw_prog);
-    if (std::holds_alternative<string>(prog_or_error)) {
-        std::cout << "unmarshaling error at " << std::get<string>(prog_or_error) << "\n";
+    if (auto prog = std::get_if<string>(&prog_or_error)) {
+        std::cout << "unmarshaling error at " << *prog << "\n";
         return 1;
     }
 
