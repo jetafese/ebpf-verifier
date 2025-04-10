@@ -19,6 +19,7 @@
 #include <vector>
 
 #include <boost/iterator/transform_iterator.hpp>
+#include <boost/range/iterator_range.hpp>
 #include <boost/lexical_cast.hpp>
 #include <gsl/gsl>
 
